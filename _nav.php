@@ -5,10 +5,10 @@
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="index.php">Accueil</a>
-            <a class="nav-link" href="contact.php">Contact</a>
-        </div>
+            <div class="navbar-nav">
+                <a class="nav-link active" aria-current="page" href="index.php">Accueil</a>
+                <a class="nav-link" href="contact.php">Nouvelle annonce</a>
+            </div>
         </div>
     </div>
 </nav>

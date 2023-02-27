@@ -8,45 +8,29 @@
         <title>Index</title>
     </head>
     <body>
-        <?php include('_nav.php') ?>
+        <?php
+            include('_nav.php');
+            require('connec.php');
 
-        <div class="container mt-5 d-flex justify-content-around">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="card-link">Card link</a>
-                    <a href="#" class="card-link">Another link</a>
+            $pdo = new PDO(DSN, USER, PASS);
+            $query = "SELECT * FROM ad";
+
+            $statement = $pdo->query($query);
+            $ads = $statement->fetchAll(PDO::FETCH_CLASS);
+        ?>
+
+        <div class="container mt-5 d-flex flex-wrap justify-content-around">
+
+            <?php foreach ($ads as $ad): ?>
+                <div class="card m-4" style="width: 250px;">
+                    <div class="card-body">
+                        <h5 class="card-title"><?= $ad->name ?></h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><?= $ad->email ?></h6>
+                        <p class="card-text"><?= $ad->price ?></p>
+                    </div>
                 </div>
-            </div>
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="card-link">Card link</a>
-                    <a href="#" class="card-link">Another link</a>
-                </div>
-            </div>
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="card-link">Card link</a>
-                    <a href="#" class="card-link">Another link</a>
-                </div>
-            </div>
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="card-link">Card link</a>
-                    <a href="#" class="card-link">Another link</a>
-                </div>
-            </div>
+            <?php endforeach; ?>
+
         </div>
     </body>
 </html>

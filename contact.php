@@ -1,3 +1,36 @@
+<?php
+require('connec.php');
+$pdo = new PDO(DSN, USER, PASS);
+$errors = [];
+
+if (!empty($_POST)) {
+    if (isset($_POST['name']) && strlen($_POST['name']) >= 50) {
+        $errors[] = 'Erreur sur le nom';
+    }
+    if (isset($_POST['price']) && $_POST['price'] <= 0) {
+        $errors[] = 'Erreur sur le prix';
+    }
+    if (isset($_POST['email']) && empty($_POST['email'])) {
+        $errors[] = "Erreur sur l'email";
+    }
+    $name = $_POST['name'];
+    $price = $_POST['price'];
+    $email = $_POST['email'];
+
+    if (empty($errors)) {
+        $query = 'INSERT INTO ad (name, price, email) VALUES (:name, :price, :email)';
+        $statement = $pdo->prepare($query);
+
+        $statement->bindValue(':name', $name);
+        $statement->bindValue(':price', $price, PDO::PARAM_INT);
+        $statement->bindValue(':email', $email);
+
+        $statement->execute();
+    }
+
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -10,38 +43,25 @@
     <body>
         <?php
             include('_nav.php');
-            $categories = [
-                    'Informatique',
-                    'Musique',
-                    'Auto',
-                    'Moto'
-            ]
         ?>
         <div class="container-sm m-5">
             <div class="card">
                 <div class="card-body">
-                    <form action="final.php" method="POST">
+                    <form method="POST">
+                        <?php
+                         var_dump($errors);
+                        ?>
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Titre</label>
-                            <input type="text" name="title" class="form-control" required id="exampleInputEmail1"">
+                            <input type="text" name="name" required class="form-control" id="exampleInputEmail1"">
                         </div>
                         <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">Catégorie</label>
-                            <select class="form-select" aria-label="Default select example" name="category" >
-                                <?php foreach ($categories as $category): ?>
-                                    <option value="<?= $category ?>">
-                                        <?= $category ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">Description</label>
-                            <textarea name="description" class="form-control" id="exampleInputPassword1" rows="4" cols="50"></textarea>
+                            <label for="exampleInputPassword1" class="form-label">Email</label>
+                            <input type="text" name="email" class="form-control" required id="exampleInputEmail1"">
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword1" class="form-label">Prix</label>
-                            <input type="number" name="price" class="form-control" id="exampleInputPassword1">
+                            <input type="number" name="price" class="form-control" id="exampleInputPassword1" min="0">
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
